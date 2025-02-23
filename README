@@ -1,0 +1,17 @@
+OPLUS OTA Finder is an Android app designed to find and download the latest OTA updates for Realme, Oppo, and OnePlus devices. It provides detailed version information, file size, security patch details, and more.
+
+🚀 Features
+🔍 Find the latest OTA updates for Realme, Oppo, and OnePlus devices
+📊 Detailed version info: Size, MD5 checksum, Android version, security patch, and OS version
+⬇️ Download OTA files directly within the app
+📋 Copy download links for easy sharing
+
+🔑 Permissions
+The app requires the following permissions:
+
+🌐 INTERNET: To check for OTA updates and download files
+💾 WRITE_EXTERNAL_STORAGE: To save downloaded OTA files
+
+🤝 Contributing
+Contributions are welcome!
+Feel free to open issues or submit pull requests for improvements and new features.

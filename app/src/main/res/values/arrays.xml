@@ -1,0 +1,14 @@
+<resources>
+    <string-array name="rui_versions">
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="regions">
+        <item>GL</item>
+        <item>CN</item>
+        <item>IN</item>
+        <item>EU</item>
+    </string-array>
+</resources>
