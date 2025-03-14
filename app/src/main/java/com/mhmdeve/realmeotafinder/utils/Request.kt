@@ -88,6 +88,7 @@ class Request(
 
         if (region == "CN" && properties["language"] == null) {
             properties["language"] = "zh-CN"
+            properties["deviceId"] = "0"
         }
 
         properties["androidVersion"] = "Android${10 + (ruiVersion ?: 1) - 1}.0"
