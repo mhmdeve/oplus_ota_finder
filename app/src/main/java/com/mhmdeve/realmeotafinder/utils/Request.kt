@@ -154,7 +154,7 @@ class Request(
                     ).toString()
                 )
             ).toString()
-            var protectedKey = Crypto.generateProtectedKey(newKey!!, Data.serverParams[region.toString()]!!.pubKey)
+            val protectedKey = Crypto.generateProtectedKey(newKey!!, Data.serverParams[region.toString()]!!.pubKey)
             val version = (((properties["time"] as? String)?.toLong() ?: (0L + (86400 * 1000)))).toString()
 
             // Mock example for protectedKey, replace with real logic
@@ -199,11 +199,10 @@ class Request(
         if (responseCode != 200) {
             throw RuntimeException("Response status mismatch, expected '200' got '${responseCode}'!")
         }
-        println("Status Valid")
 
         // Parse the response body as JSON
         val jsonResponse = JSONObject(responseBody)
-
+        Log.i("Response", jsonResponse.toString())
         // Check if 'responseCode' is present and not equal to 200
         if (jsonResponse.has("responseCode") && jsonResponse.getInt("responseCode") != 200) {
             val errMsg = jsonResponse.optString("errMsg", "No error message provided")
@@ -219,7 +218,7 @@ class Request(
 
         // Parse the JSON
         val jsonObject = JSONObject(jsonString)
-        val body = jsonObject.getString("body")
+        jsonObject.getString("body")
         val responseCode = jsonObject.getInt("responseCode")
         return responseCode
     }

@@ -85,14 +85,14 @@ class Crypto {
             val keyPseudo = (0..9).random().toString() + (1..14).map { ('0'..'9').random() }.joinToString("")
 
             // Get the real key using the getKey() function from Crypto class
-            val keyReal = Crypto.getKey(keyPseudo)
+            val keyReal = getKey(keyPseudo)
 
             // Generate the IV using MD5 of the real key
             val md = MessageDigest.getInstance("MD5")
             val iv = md.digest(keyReal)
 
             // Encrypt using AES-CTR
-            val encrypted = Crypto.enc_AES_CTR(buf.toByteArray(Charsets.UTF_8), keyReal, iv)
+            val encrypted = enc_AES_CTR(buf.toByteArray(Charsets.UTF_8), keyReal, iv)
 
             // Return the base64 encoded ciphertext concatenated with the key pseudo
             return Base64.getEncoder().encodeToString(encrypted) + keyPseudo
@@ -100,17 +100,17 @@ class Crypto {
 
         fun decryptCtr(buf: String): String {
             // Decode the base64-encoded ciphertext (excluding the last 15 characters for the key pseudo)
-            val data = Base64.getDecoder().decode(buf.substring(0, buf.length - 15))
+            val data = Base64.getDecoder().decode(buf.dropLast(15))
 
             // Get the real key using the getKey() function from Crypto class
-            val keyReal = Crypto.getKey(buf.takeLast(15))
+            val keyReal = getKey(buf.takeLast(15))
 
             // Generate the IV using MD5 of the real key
             val md = MessageDigest.getInstance("MD5")
             val iv = md.digest(keyReal)
 
             // Decrypt using AES-CTR
-            val decrypted = Crypto.dec_AES_CTR(data, keyReal, iv)
+            val decrypted = dec_AES_CTR(data, keyReal, iv)
 
             // Convert decrypted bytes to String and return
             return String(decrypted, Charsets.UTF_8)

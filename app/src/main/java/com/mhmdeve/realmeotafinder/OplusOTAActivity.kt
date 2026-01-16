@@ -1,6 +1,7 @@
 package com.mhmdeve.realmeotafinder
 
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -33,7 +34,7 @@ class OplusOTAActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_oplus_ota)
 
-        scrollView = findViewById<ScrollView>(R.id.scrollView)
+        scrollView = findViewById(R.id.scrollView)
         val productModel = findViewById<EditText>(R.id.input_product_model)
         val otaVersion = findViewById<EditText>(R.id.input_ota_version)
         val ruiVersion = findViewById<MaterialAutoCompleteTextView>(R.id.spinner_rui_version)
@@ -70,11 +71,16 @@ class OplusOTAActivity : AppCompatActivity() {
         productModel.setText(getSystemProperty("ro.product.name"))
         otaVersion.setText(getSystemProperty("ro.build.version.ota"))
         nvIdentifier.setText(getSystemProperty("ro.build.oplus_nv_id"))
-        guid.setText("0") // If no prop available, you can set default or keep empty
+        guid.setText(
+            Settings.Secure.getString(
+                contentResolver,
+                Settings.Secure.ANDROID_ID
+            )
+        ) // If no prop available, you can set default or keep empty
         language.setText(getSystemProperty("persist.sys.locale"))
 
         submitButton.setOnClickListener {
-            responseText.text = "Waiting for the response..."
+            responseText.text = getString(R.string.waiting_for_the_response)
             scrollView.post {
                 scrollView.scrollTo(0, responseText.bottom)
             }
@@ -181,14 +187,15 @@ class OplusOTAActivity : AppCompatActivity() {
                     val tmpJson = JSONObject(responseBody!!)
 
                     if (tmpJson.getInt("responseCode") == 304) {
-                        if (!otaVersion.endsWith("0000_000000000000")) {
+                        if (!otaVersion.endsWith("0001_000000000001")) {
                             // Modify the otaVersion by replacing the last 17 characters
-                            val modifiedOtaVersion = otaVersion.dropLast(17) + "0000_000000000000"
+                            val modifiedOtaVersion = otaVersion.dropLast(17) + "0001_000000000001"
                             println("Received 304. Retrying with modified otaVersion: $modifiedOtaVersion")
 
                             // Recursively call sendRequest with the modified otaVersion
                             runOnUiThread {
-                                responseText.text = "Retrying with modified otaVersion..."
+                                responseText.text =
+                                    getString(R.string.retrying_with_modified_otaversion)
                             }
 
                             sendRequest(
@@ -210,7 +217,7 @@ class OplusOTAActivity : AppCompatActivity() {
                             // If already modified, show error
                             runOnUiThread {
                                 responseText.text =
-                                    "Error: Received 304 with already modified otaVersion."
+                                    getString(R.string.error_received_304_with_already_modified_otaversion)
                             }
                         }
                         return
@@ -299,14 +306,14 @@ class OplusOTAActivity : AppCompatActivity() {
                         } else {
                             println("No body to decrypt.")
                             runOnUiThread {
-                                responseText.text = "No body to decrypt."
+                                responseText.text = getString(R.string.no_body_to_decrypt)
                             }
                         }
 
                     } catch (e: Exception) {
                         Log.e("Error", e.message.toString())
                         runOnUiThread {
-                            responseText.text = "Exception: ${e.message}"
+                            responseText.text = getString(R.string.exception, e.message)
                         }
                     }
                 }

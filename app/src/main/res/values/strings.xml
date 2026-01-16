@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">OPLUS OTA Downloader</string>
+    <string name="retrying_with_modified_otaversion">Retrying with modified otaVersion...</string>
+    <string name="error_received_304_with_already_modified_otaversion">Error: Received 304 with already modified otaVersion.</string>
+    <string name="no_body_to_decrypt">No body to decrypt.</string>
+    <string name="exception">Exception: %1$s</string>
+    <string name="waiting_for_the_response">Waiting for the response...</string>
 </resources>
